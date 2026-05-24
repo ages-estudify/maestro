@@ -1,0 +1,8 @@
+appId: estudify.develop
+---
+- runFlow: "FirstAccessApp.yaml"
+- launchApp:
+    clearState: false
+- assertVisible: "Bem Vindo!"
+
+

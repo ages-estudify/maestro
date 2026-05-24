@@ -1,0 +1,13 @@
+appId: estudify.develop
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Treine\nSempre"
+- tapOn: "Pr\u00f3ximo"
+- assertVisible: "Estude\nDirecionado"
+- tapOn: "Pr\u00f3ximo"
+- assertVisible: "Acompanhe\na Evolu\u00e7\u00e3o"
+- tapOn: "Log in"
+- assertVisible: "Bem Vindo!"
+
+
