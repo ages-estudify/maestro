@@ -76,5 +76,16 @@ O Maestro Studio permite interagir com a tela do dispositivo e gerar o código Y
 
 ---
 
+## Testes em iOS (Requer macOS)
+
+É possível executar os testes no ecossistema iOS **apenas se você utilizar um Mac**.
+
+**Requisitos e Configuração:**
+* **Sistema e Ferramentas:** macOS e Xcode instalados.
+* **Simulador iOS (Recomendado):** Compile e rode o aplicativo no simulador executando:
+```bash
+  npx expo run:ios
+```
+
 ## Referências
 * [Documentação Oficial do Maestro](https://maestro.mobile.dev/)
