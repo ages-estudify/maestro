@@ -1,0 +1,15 @@
+{
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg": "^8.21.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^11.0.0"
+  },
+  "scripts": {
+    "db:clean": "node loginTests/DeleteUser.js",
+    "test:register": "npm run db:clean && dotenv -- maestro test loginTests/RegisterFirstTime.yaml",
+    "test:all": "npm run db:clean && dotenv -- maestro test loginTests/",
+    "studio": "dotenv -- ./MaestroStudio.AppImage"
+  }
+}

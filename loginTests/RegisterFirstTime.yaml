@@ -1,0 +1,18 @@
+appId: estudify.develop
+---
+- runFlow: "FirstAccessApp.yaml"
+- launchApp:
+    clearState: false
+- tapOn: "Registrar"
+- tapOn: "Ex: Maria dos Santos"
+- inputText: ${NOME}
+- tapOn: "abc@abc.com"
+- inputText: ${EMAIL}
+- tapOn: "DD/MM/AAAA"
+- inputText: ${NASCIMENTO}
+- tapOn: "(11) 99999-9999"
+- inputText: ${TELEFONE}
+- tapOn: "******"
+- inputText: ${SENHA}
+- tapOn: "******"
+- inputText: ${SENHA}

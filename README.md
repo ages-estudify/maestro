@@ -76,6 +76,18 @@ O Maestro Studio permite interagir com a tela do dispositivo e gerar o código Y
 
 ---
 
+## Testes de Registro (Limpeza de Banco)
+
+Para testar o fluxo de criação de usuário (`Register`), é necessário garantir que o e-mail de teste não exista no banco de dados, evitando erros de duplicidade. Foi criado um script em Node.js (`delete-user.js`) que deleta o usuário de teste e suas dependências no PostgreSQL.
+
+### 1. Instalação de Dependências
+O script exige o módulo nativo do PostgreSQL para Node.js. Navegue até a pasta onde o script está localizado (ex: `maestro/scripts`) e instale a dependência:
+
+```bash
+npm i
+```
+---
+
 ## Testes em iOS (Requer macOS)
 
 É possível executar os testes no ecossistema iOS **apenas se você utilizar um Mac**.

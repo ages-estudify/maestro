@@ -34,3 +34,6 @@ google-services.json
 *.hprof
 
 MaestroStudio.AppImage
+node_modules/*
+.maestro/*
+.env
