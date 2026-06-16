@@ -36,4 +36,5 @@ google-services.json
 MaestroStudio.AppImage
 node_modules/*
 .maestro/*
+!.maestro/config.template.yaml
 .env

@@ -1,8 +1,24 @@
 appId: estudify.develop
+
+# --- MAESTRO ENV START ---
+env:
+  NOME: "Maestro teste"
+  EMAIL: "maestro@email.com"
+  NASCIMENTO: "01/01/2001"
+  TELEFONE: "11987654321"
+  SENHA: "Maestro123"
+# --- MAESTRO ENV END ---
+
+
+config:
+  ext:
+    actionTimeout: 500
+
+
+
+
 ---
-- runFlow: "FirstAccessApp.yaml"
-- launchApp:
-    clearState: false
+- runFlow: "FirstAccessAppSkip.yaml"
 - tapOn: "Registrar"
 - tapOn: "Ex: Maria dos Santos"
 - inputText: ${NOME}
@@ -12,7 +28,18 @@ appId: estudify.develop
 - inputText: ${NASCIMENTO}
 - tapOn: "(11) 99999-9999"
 - inputText: ${TELEFONE}
-- tapOn: "******"
+- scroll
+- tapOn:
+    below: "Senha"
 - inputText: ${SENHA}
-- tapOn: "******"
+- tapOn:
+    rightOf: "Senha"
+- tapOn:
+    below: "Confirmar Senha"
 - inputText: ${SENHA}
+- tapOn:
+    rightOf: "Confirmar Senha"
+- tapOn: "Confirmar"
+- tapOn:
+    text: "Never for this app or website"
+    optional: true

@@ -8,8 +8,8 @@
   },
   "scripts": {
     "db:clean": "node loginTests/DeleteUser.js",
-    "test:register": "npm run db:clean && dotenv -- maestro test loginTests/RegisterFirstTime.yaml",
-    "test:all": "npm run db:clean && dotenv -- maestro test loginTests/",
-    "studio": "dotenv -- ./MaestroStudio.AppImage"
+    "test:register": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test loginTests/RegisterFirstTime.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:all": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test loginTests/; node restoreConfig.js; kill $SERVER_PID)",
+    "studio": "node setupConfig.js && (node server.js & SERVER_PID=$!; ./MaestroStudio.AppImage; node restoreConfig.js; kill $SERVER_PID)"
   }
 }

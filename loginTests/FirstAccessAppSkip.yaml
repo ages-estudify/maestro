@@ -1,0 +1,9 @@
+appId: estudify.develop
+---
+- launchApp:
+    clearState: true
+- assertVisible: "Treine\nSempre"
+- tapOn: "→ Pular"
+- assertVisible: "Bem Vindo!"
+
+
