@@ -1,2 +1,10 @@
 appId: estudify.develop
 ---
+- runFlow: "../3_onboarding/Onboarding.yaml"
+- assertVisible: "Treinar"
+- tapOn: "Progresso"
+- assertVisible: "Meu Progresso"
+- assertVisible: "Sua evolução nos estudos"
+- assertVisible: "Nível"
+- assertVisible: "Tópicos Concluídos"
+- assertVisible: "Taxa de Acertos"

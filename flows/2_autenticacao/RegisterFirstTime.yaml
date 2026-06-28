@@ -9,9 +9,11 @@ env:
   SENHA: "Maestro123"
 # --- MAESTRO ENV END ---
 
+
+
 config:
   ext:
-    actionTimeout: 500
+    actionTimeout: 400
 
 ---
 - runScript: "../../utils/triggerCleanDb.js"

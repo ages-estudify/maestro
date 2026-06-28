@@ -1,2 +1,45 @@
 appId: estudify.develop
 ---
+- runFlow: "../2_autenticacao/RegisterFirstTime.yaml"
+
+- assertVisible: "Ola, eu sou o Estu!"
+- tapOn: "Proximo"
+
+- assertVisible: "Me conte suas metas e objetivos"
+- tapOn: "Ex: Computação"
+- inputText: "Computacao"
+- hideKeyboard
+
+
+- tapOn: "Ex: Inglês"
+- inputText: "Ingles"
+- hideKeyboard
+
+- tapOn: "Ex: PUCRS"
+- inputText: "PUCRS"
+- hideKeyboard
+- tapOn: "Proximo"
+
+- assertVisible: "Vamos organizar seus horários de estudo"
+
+- tapOn: "Seg"
+- tapOn: "08:00"
+- tapOn: "09:00"
+- tapOn: "Ter"
+- tapOn: "14:00"
+- tapOn: "15:00"
+- tapOn: "Qua"
+- tapOn: "Qui"
+- tapOn: "10:00"
+- tapOn: "11:00"
+- tapOn: "12:00"
+- tapOn: "12:00"
+- tapOn: "Sex"
+- tapOn: "Sab"
+- tapOn: "Dom"
+- tapOn: "Sab"
+- tapOn: "20:00"
+- tapOn: "21:00"
+
+- tapOn: "Salvar"
+- assertVisible: "Treinar"

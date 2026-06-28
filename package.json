@@ -8,7 +8,16 @@
   },
   "scripts": {
     "db:clean": "node utils/dbDeleteUser.js",
+    "config:setup": "node setupConfig.js",
+    "config:restore": "node restoreConfig.js",
     "test:register": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/2_autenticacao/RegisterFirstTime.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:login": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/2_autenticacao/Login.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:onboarding": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/3_onboarding/Onboarding.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:training": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/4_treinamento_diario/TreinamentoDiario.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:simulados": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/5_simulados/Simulados.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:schedule": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/6_cronograma_semanal/CronogramaSemanal.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:progress": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/7_progresso_estatisticas/ProgressoEstatisticas.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:profile": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/8_perfil_assinatura_planos/PerfilAssinaturaPlanos.yaml; node restoreConfig.js; kill $SERVER_PID)",
     "test:all": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/; node restoreConfig.js; kill $SERVER_PID)",
     "studio": "node setupConfig.js && (node server.js & SERVER_PID=$!; ./MaestroStudio.AppImage; node restoreConfig.js; kill $SERVER_PID)"
   }

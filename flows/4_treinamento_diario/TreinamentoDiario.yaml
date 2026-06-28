@@ -1,2 +1,17 @@
 appId: estudify.develop
 ---
+- runFlow: "../3_onboarding/Onboarding.yaml"
+- assertVisible: "Treinar"
+- tapOn: "Matemática"
+- assertVisible: "Matemática"
+- tapOn: "Matemática Básica"
+- assertVisible: "Como você quer treinar hoje?"
+- tapOn: "Questões originais da banca"
+- assertVisible: "Enviar"
+- tapOn: "A"
+- tapOn: "Enviar"
+- assertVisible: "Explicação"
+- tapOn: "Finalizar Treino"
+- assertVisible: "Resultados do Treino"
+- tapOn: "Voltar"
+- assertVisible: "Treinar"

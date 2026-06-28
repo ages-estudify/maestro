@@ -1,0 +1,18 @@
+appId: estudify.develop
+
+# --- MAESTRO ENV START ---
+env:
+  EMAIL: "maestro@email.com"
+  SENHA: "Maestro123"
+# --- MAESTRO ENV END ---
+---
+- runFlow: "RegisterFirstTime.yaml"
+- runFlow: "NotFirstAccessApp.yaml"
+- assertVisible: "Bem Vindo!"
+- tapOn: "email@email.com"
+- inputText: ${EMAIL}
+- hideKeyboard
+- tapOn: "*******"
+- inputText: ${SENHA}
+- hideKeyboard
+- tapOn: "Login"

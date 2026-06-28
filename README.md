@@ -75,6 +75,34 @@ Configuramos scripts no [package.json](file:///home/vitor/Documentos/ages/ages4/
   ```bash
   npm run test:register
   ```
+* **Para rodar o fluxo de login**:
+  ```bash
+  npm run test:login
+  ```
+* **Para rodar o fluxo de onboarding**:
+  ```bash
+  npm run test:onboarding
+  ```
+* **Para rodar o fluxo de treinamento diário**:
+  ```bash
+  npm run test:training
+  ```
+* **Para rodar o fluxo de simulados**:
+  ```bash
+  npm run test:simulados
+  ```
+* **Para rodar o fluxo de cronograma semanal**:
+  ```bash
+  npm run test:schedule
+  ```
+* **Para rodar o fluxo de progresso e estatísticas**:
+  ```bash
+  npm run test:progress
+  ```
+* **Para rodar o fluxo de perfil e planos**:
+  ```bash
+  npm run test:profile
+  ```
 * **Para rodar todos os testes da pasta `flows`**:
   ```bash
   npm run test:all
@@ -82,6 +110,17 @@ Configuramos scripts no [package.json](file:///home/vitor/Documentos/ages/ages4/
 * **Para iniciar o Maestro Studio com suporte a limpeza do banco**:
   ```bash
   npm run studio
+  ```
+
+#### Utilitários de Configuração (Variáveis de Ambiente)
+Se quiser rodar os testes individualmente via CLI do Maestro ou debugar sem usar os comandos agregados, você pode preparar ou limpar os arquivos YAML manualmente:
+* **Injetar variáveis do `.env` nos arquivos `.yaml`**:
+  ```bash
+  npm run config:setup
+  ```
+* **Limpar variáveis injetadas dos arquivos `.yaml` (evita enviar segredos no git)**:
+  ```bash
+  npm run config:restore
   ```
 
 ---

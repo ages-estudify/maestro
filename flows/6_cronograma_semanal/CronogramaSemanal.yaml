@@ -1,2 +1,13 @@
 appId: estudify.develop
 ---
+- runFlow: "../3_onboarding/Onboarding.yaml"
+- assertVisible: "Treinar"
+- tapOn: "Cronograma"
+- assertVisible: "Cronograma"
+- tapOn: "Seg"
+- tapOn:
+    accessibilityLabel: "Marcar Matemática Básica como concluído"
+    optional: true
+- tapOn:
+    accessibilityLabel: "Marcar Álgebra como concluído"
+    optional: true

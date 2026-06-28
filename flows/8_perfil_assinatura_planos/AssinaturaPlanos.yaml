@@ -1,0 +1,13 @@
+appId: estudify.develop
+---
+- runFlow: "../3_onboarding/OnboardingSkip.yaml"
+- assertVisible: "Treinar"
+- tapOn: "Ver Planos"
+- swipe:
+    direction: LEFT
+    element:
+    id: "plans-carousel"
+
+- tapOn: "Assinar agora"
+- assertVisible: "Seu plano foi ativado com sucesso. Bons estudos! 🎉"
+- tapOn: "OK"

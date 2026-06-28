@@ -1,2 +1,11 @@
 appId: estudify.develop
 ---
+- runFlow: "../3_onboarding/Onboarding.yaml"
+- assertVisible: "Treinar"
+- tapOn: "Abrir perfil"
+- scroll
+- tapOn: "Gerenciar Planos"
+- assertVisible: "Selecione o plano de sua preferência"
+- tapOn: "Assinar agora"
+- assertVisible: "Seu plano foi ativado com sucesso. Bons estudos! 🎉"
+- tapOn: "OK"
