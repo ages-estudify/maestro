@@ -5,5 +5,3 @@ appId: estudify.develop
 - assertVisible: "Treine\nSempre"
 - tapOn: "→ Pular"
 - assertVisible: "Bem Vindo!"
-
-

@@ -7,9 +7,9 @@
     "dotenv-cli": "^11.0.0"
   },
   "scripts": {
-    "db:clean": "node loginTests/DeleteUser.js",
-    "test:register": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test loginTests/RegisterFirstTime.yaml; node restoreConfig.js; kill $SERVER_PID)",
-    "test:all": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test loginTests/; node restoreConfig.js; kill $SERVER_PID)",
+    "db:clean": "node utils/dbDeleteUser.js",
+    "test:register": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/2_autenticacao/RegisterFirstTime.yaml; node restoreConfig.js; kill $SERVER_PID)",
+    "test:all": "node setupConfig.js && (node server.js & SERVER_PID=$!; maestro test flows/; node restoreConfig.js; kill $SERVER_PID)",
     "studio": "node setupConfig.js && (node server.js & SERVER_PID=$!; ./MaestroStudio.AppImage; node restoreConfig.js; kill $SERVER_PID)"
   }
 }

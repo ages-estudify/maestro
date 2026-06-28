@@ -1,9 +1,11 @@
 # Configuração do Ambiente - Testes E2E com Maestro
 
-Este guia descreve os passos para configurar e executar testes End-to-End (E2E) no nosso aplicativo utilizando o [Maestro](https://maestro.mobile.dev/).
+Este guia descreve os passos para configurar, executar e gerenciar testes End-to-End (E2E) no nosso aplicativo utilizando o [Maestro](https://maestro.mobile.dev/).
+
+---
 
 ## Por que apenas Android?
-Atualmente, o ambiente de testes suporta exclusivamente **Android**. A Apple impõe restrições rigorosas ao seu ecossistema: a compilação de aplicativos iOS nativos e a execução de ferramentas de automação para iOS (como os drivers do Maestro) exigem obrigatoriamente o sistema operacional macOS e o Xcode. Como o desenvolvimento ocorre em ambientes Windows/Linux, os testes locais são limitados ao Android.
+Atualmente, o ambiente de testes suporta exclusivamente **Android**. A Apple impõe restrições rígosas ao seu ecossistema: a compilação de aplicativos iOS nativos e a execução de ferramentas de automação para iOS (como os drivers do Maestro) exigem obrigatoriamente o sistema operacional macOS e o Xcode. Como o desenvolvimento ocorre em ambientes Windows/Linux, os testes locais são limitados ao Android.
 
 ## Dispositivos Suportados
 Você pode executar os testes em duas modalidades:
@@ -17,7 +19,7 @@ Você pode executar os testes em duas modalidades:
 ### Linux e Windows (via WSL)
 Abra o terminal e execute:
 ```bash
-curl -Ls "[https://get.maestro.mobile.dev](https://get.maestro.mobile.dev)" | bash
+curl -Ls "https://get.maestro.mobile.dev" | bash
 ```
 
 Após a instalação, adicione o Maestro ao seu `PATH`:
@@ -39,65 +41,105 @@ maestro --version
 
 ---
 
-## Preparando o App (Expo)
-O Maestro precisa interagir com a versão nativa compilada do aplicativo, e não através do "Expo Go".
-Com o dispositivo conectado (ou emulador aberto), compile e instale o app nativamente rodando na raiz do projeto:
+## Arquitetura e Componentes Criados
+
+### 1. O Script de Inicialização `start.sh`
+O [start.sh](file:///home/vitor/Documentos/ages/ages4/repos/maestro/start.sh) automatiza a inicialização de todo o ecossistema de desenvolvimento e testes. Ele realiza o seguinte:
+* Valida se há algum dispositivo Android conectado via ADB.
+* Faz o redirecionamento de porta (`adb reverse`) para que o aplicativo no dispositivo consiga acessar o backend local na porta `3000`.
+* Inicia o banco de dados via Docker e roda as migrations do Prisma (`npx prisma migrate reset`).
+* Inicializa o backend em NestJS e inicia o build do frontend em Expo.
+* Configura a variável `JAVA_TOOL_OPTIONS` para que qualquer relatório de crash da JVM (usada pelo compilador e runner do Maestro) seja salvo na pasta local [logs/](file:///home/vitor/Documentos/ages/ages4/repos/maestro/logs) em vez de poluir a raiz do repositório.
+* Executa o Maestro Studio em um terminal separado.
+
+### 2. O Microserviço de Apoio `server.js`
+Durante os testes de interface, é comum precisar redefinir o estado do banco de dados (ex: deletar o usuário de teste para permitir novo cadastro). 
+* **O problema**: O interpretador JS nativo do Maestro roda em sandbox e não possui suporte para conectar a bancos de dados diretamente usando bibliotecas do Node como o `pg`.
+* **A solução**: Criamos o [server.js](file:///home/vitor/Documentos/ages/ages4/repos/maestro/server.js), um microserviço HTTP leve (utilizando módulos nativos do Node) executado no host durante os testes (porta `3001`). 
+* Quando recebe uma chamada HTTP `POST /delete-user`, o microserviço executa o script modular [utils/dbDeleteUser.js](file:///home/vitor/Documentos/ages/ages4/repos/maestro/utils/dbDeleteUser.js) que remove o usuário especificado e todas as suas chaves estrangeiras vinculadas de maneira segura no PostgreSQL local.
+
+---
+
+## Como Utilizar o Ambiente
+
+### 1. Inicializando os Serviços Básicos
+Primeiro, garanta que seu celular ou emulador esteja conectado e execute o script na raiz da pasta `maestro`:
 ```bash
-npx expo run:android
+./start.sh
+```
+
+### 2. Executando os Testes via NPM
+Configuramos scripts no [package.json](file:///home/vitor/Documentos/ages/ages4/repos/maestro/package.json) para inicializar e desligar o microserviço `server.js` automaticamente em conjunto com o Maestro:
+
+* **Para rodar o fluxo completo de registro (com limpeza prévia de banco)**:
+  ```bash
+  npm run test:register
+  ```
+* **Para rodar todos os testes da pasta `flows`**:
+  ```bash
+  npm run test:all
+  ```
+* **Para iniciar o Maestro Studio com suporte a limpeza do banco**:
+  ```bash
+  npm run studio
+  ```
+
+---
+
+## Criando Novos Scripts de Teste
+
+Se você quiser criar novos fluxos de teste locais ou adicionar novos scripts, siga estas diretrizes:
+
+Crie um arquivo `.yaml` de teste principal dentro das subpastas numeradas da pasta `flows/`. O cabeçalho deve declarar o `appId`.
+
+```yaml
+appId: estudify.develop
+---
+- runScript: "../utils/triggerCleanDb.js"   # Opcional: Garante que o banco seja limpo antes do teste iniciar
+- runFlow: "../1_apresentacao_boas_vindas/FirstAccessAppSkip.yaml"
+- tapOn: "Registrar"
+- inputText: ${NOME}
+```
+
+### Usando Variáveis de Ambiente (.env)
+Você pode usar a sintaxe `${NOME_DA_VARIAVEL}` nos arquivos YAML.
+1. Declare a variável no arquivo [.env](file:///home/vitor/Documentos/ages/ages4/repos/maestro/.env).
+2. O script [setupConfig.js](file:///home/vitor/Documentos/ages/ages4/repos/maestro/setupConfig.js) irá ler e injetar essas variáveis nos fluxos `.yaml` antes da execução dos testes.
+3. O script [restoreConfig.js](file:///home/vitor/Documentos/ages/ages4/repos/maestro/restoreConfig.js) limpa os valores injetados após o término do teste para evitar vazamento de credenciais no git.
+
+### Controlando o Banco nos Novos Testes
+Se o seu novo teste precisar limpar um usuário específico do banco de dados, você pode chamar o nosso microserviço via script JS do Maestro.
+
+Crie um arquivo `.js` no Maestro (exemplo: `CleanCustomUser.js`):
+```javascript
+try {
+  var response = http.post('http://localhost:3001/delete-user', {
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // Envie o e-mail que deseja deletar. Se omitido ou enviado vazio {}, 
+    // o servidor utilizará por padrão o EMAIL definido no seu .env
+    body: JSON.stringify({ email: "usuario_customizado@email.com" })
+  });
+
+  if (response.status !== 200) {
+    throw new Error('Falha ao limpar banco: ' + response.body);
+  }
+  console.log('Banco de dados preparado com sucesso!');
+} catch (error) {
+  throw new Error('Erro na chamada do microserviço: ' + error.message);
+}
+```
+
+E no seu fluxo `.yaml`, adicione o comando:
+```yaml
+- runScript: CleanCustomUser.js
 ```
 
 ---
 
-## Como Utilizar
-
-### Executando Testes
-Os testes são escritos em arquivos `.yaml`. Para rodar um teste específico, utilize o comando:
-```bash
-maestro test caminho/para/o/arquivo.yaml
-```
-
-Para rodar todos os testes de uma pasta em sequência:
-```bash
-maestro test caminho/para/pasta/
-```
-
-### Usando o Maestro Studio (Criação Visual)
-O Maestro Studio permite interagir com a tela do dispositivo e gerar o código YAML automaticamente.
-
-1. **Baixe o Maestro Studio (Linux):**
-```bash
-   wget [https://studio.maestro.dev/MaestroStudio.AppImage](https://studio.maestro.dev/MaestroStudio.AppImage)
-   chmod +x MaestroStudio.AppImage
-   ```
-2. Execute o arquivo `./MaestroStudio.AppImage`.
-3. Interaja com a interface espelhada para copiar os comandos e colar nos arquivos de teste.
-
-> **Opcional:** Para espelhar a tela do dispositivo físico no PC e facilitar o uso do app durante os testes, instale e rode o `scrcpy` no terminal.
-
----
-
-## Testes de Registro (Limpeza de Banco)
-
-Para testar o fluxo de criação de usuário (`Register`), é necessário garantir que o e-mail de teste não exista no banco de dados, evitando erros de duplicidade. Foi criado um script em Node.js (`delete-user.js`) que deleta o usuário de teste e suas dependências no PostgreSQL.
-
-### 1. Instalação de Dependências
-O script exige o módulo nativo do PostgreSQL para Node.js. Navegue até a pasta onde o script está localizado (ex: `maestro/scripts`) e instale a dependência:
-
-```bash
-npm i
-```
----
-
-## Testes em iOS (Requer macOS)
-
-É possível executar os testes no ecossistema iOS **apenas se você utilizar um Mac**.
-
-**Requisitos e Configuração:**
-* **Sistema e Ferramentas:** macOS e Xcode instalados.
-* **Simulador iOS (Recomendado):** Compile e rode o aplicativo no simulador executando:
-```bash
-  npx expo run:ios
-```
+## Diretório de Logs
+Todos os arquivos residuais e relatórios de erro gerados pela Java Virtual Machine (JVM) do Maestro são criados dentro do diretório [logs/](file:///home/vitor/Documentos/ages/ages4/repos/maestro/logs). Esse diretório está configurado no `.gitignore` para evitar o envio de arquivos indesejados ao repositório git.
 
 ## Referências
 * [Documentação Oficial do Maestro](https://maestro.mobile.dev/)

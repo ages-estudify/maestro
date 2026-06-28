@@ -9,36 +9,46 @@ env:
   SENHA: "Maestro123"
 # --- MAESTRO ENV END ---
 
-
 config:
   ext:
     actionTimeout: 500
 
-
-
-
 ---
-- runFlow: "FirstAccessAppSkip.yaml"
+- runScript: "../../utils/triggerCleanDb.js"
+- runFlow: "../1_apresentacao_boas_vindas/FirstAccessAppSkip.yaml"
 - tapOn: "Registrar"
+
 - tapOn: "Ex: Maria dos Santos"
 - inputText: ${NOME}
+- hideKeyboard
+
 - tapOn: "abc@abc.com"
 - inputText: ${EMAIL}
+- hideKeyboard
+
 - tapOn: "DD/MM/AAAA"
 - inputText: ${NASCIMENTO}
+- hideKeyboard
+
 - tapOn: "(11) 99999-9999"
 - inputText: ${TELEFONE}
+- hideKeyboard
+
 - scroll
 - tapOn:
     below: "Senha"
 - inputText: ${SENHA}
+- hideKeyboard
 - tapOn:
     rightOf: "Senha"
+
 - tapOn:
     below: "Confirmar Senha"
 - inputText: ${SENHA}
+- hideKeyboard
 - tapOn:
     rightOf: "Confirmar Senha"
+
 - tapOn: "Confirmar"
 - tapOn:
     text: "Never for this app or website"

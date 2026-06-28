@@ -9,5 +9,3 @@ appId: estudify.develop
 - assertVisible: "Acompanhe\na Evolu\u00e7\u00e3o"
 - tapOn: "Log in"
 - assertVisible: "Bem Vindo!"
-
-

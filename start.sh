@@ -6,6 +6,10 @@ PORTA_FRONTEND=8081
 DIR_MAESTRO=$(dirname "$(realpath "$0")")
 PROJECT_DIR=$(realpath "$DIR_MAESTRO/..")
 
+# Redireciona arquivos de erro/crash da JVM (usada pelo Maestro) para a pasta logs
+mkdir -p "$DIR_MAESTRO/logs"
+export JAVA_TOOL_OPTIONS="-XX:ErrorFile=$DIR_MAESTRO/logs/hs_err_pid%p.log"
+
 DIR_BACKEND="$PROJECT_DIR/backend"
 DIR_FRONTEND="$PROJECT_DIR/frontend-mobile"
 
