@@ -1,6 +1,8 @@
 appId: estudify.develop
 ---
-- runFlow: "../2_autenticacao/RegisterFirstTime.yaml"
+# - runFlow: "../2_autenticacao/RegisterFirstTime.yaml"
+- runFlow: "../2_autenticacao/Login.yaml"
+
 
 - assertVisible: "Ola, eu sou o Estu!"
 - tapOn: "Proximo"

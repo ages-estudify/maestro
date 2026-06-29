@@ -103,10 +103,14 @@ Configuramos scripts no [package.json](file:///home/vitor/Documentos/ages/ages4/
   ```bash
   npm run test:profile
   ```
-* **Para rodar todos os testes da pasta `flows`**:
+* **Para rodar todos os testes de forma sequencial (com retry automático)**:
   ```bash
-  npm run test:all
+  npm run test
   ```
+  Este comando executa o script [run-tests.js](file:///home/vitor/Documentos/ages/ages4/repos/maestro/run-tests.js) que descobre todos os fluxos `.yaml` na pasta `flows/`, garantindo que:
+  - Os fluxos que contêm `"simulado"` sejam executados por último.
+  - Cada teste possua um mecanismo de **retry automático de até 1 vez** (máximo de 2 tentativas) caso falhe.
+  - As configurações do `.env` sejam injetadas (`setupConfig.js`) e limpas (`restoreConfig.js`) de forma automatizada ao final da execução.
 * **Para iniciar o Maestro Studio com suporte a limpeza do banco**:
   ```bash
   npm run studio

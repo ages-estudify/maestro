@@ -1,6 +1,9 @@
 appId: estudify.develop
 ---
-- runFlow: "../3_onboarding/Onboarding.yaml"
+# - runFlow: "../3_onboarding/Onboarding.yaml"
+- runFlow: "../2_autenticacao/Login.yaml"
+
+
 - assertVisible: "Treinar"
 - tapOn: "Abrir perfil"
 - scroll

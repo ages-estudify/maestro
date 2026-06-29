@@ -1,6 +1,8 @@
 appId: estudify.develop
 ---
-- runFlow: "../3_onboarding/Onboarding.yaml"
+# - runFlow: "../8_perfil_assinatura_planos/AssinaturaPlanos.yaml"
+- runFlow: "../2_autenticacao/Login.yaml"
+
 - assertVisible: "Treinar"
 - tapOn: "Matemática"
 - assertVisible: "Matemática"

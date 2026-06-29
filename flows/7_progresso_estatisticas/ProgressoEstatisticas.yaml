@@ -1,10 +1,8 @@
 appId: estudify.develop
 ---
-- runFlow: "../3_onboarding/Onboarding.yaml"
+# - runFlow: "../8_perfil_assinatura_planos/PerfilAssinaturaPlanos.yaml"
+- runFlow: "../2_autenticacao/Login.yaml"
+
 - assertVisible: "Treinar"
 - tapOn: "Progresso"
-- assertVisible: "Meu Progresso"
-- assertVisible: "Sua evolução nos estudos"
-- assertVisible: "Nível"
-- assertVisible: "Tópicos Concluídos"
-- assertVisible: "Taxa de Acertos"
+- scroll

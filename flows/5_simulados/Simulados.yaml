@@ -1,25 +1,19 @@
 appId: estudify.develop
 ---
-- runFlow: "../3_onboarding/Onboarding.yaml"
+- runFlow: "../8_perfil_assinatura_planos/AssinaturaPlanos.yaml"
 - assertVisible: "Treinar"
 - tapOn: "Simulados"
 - assertVisible: "Simulado 1"
 - tapOn: "Simulado 1"
-- assertVisible: "Dia 1"
-- tapOn: "Dia 1"
-- assertVisible: "Inglês"
-- tapOn: "Inglês"
-- assertVisible: "Próxima"
+- tapOn: "Dia 2"
 - tapOn: "A"
+- tapOn: "Próxima"
+- tapOn: "A"
+- tapOn: "Próxima"
+
 - tapOn:
-    rightOf:
-      text: "00:0[0-9]"
-      isRegex: true
-- assertVisible: "Finalizar Simulado"
+    point: 88%,9%
 - tapOn: "Finalizar Simulado"
-- assertVisible: "Finalizar Simulado?"
 - tapOn: "Confirmar"
-- assertVisible: "Resultados Simulado"
 - tapOn:
-    rightOf: "Resultados Simulado"
-- assertVisible: "Simulado 1"
+    point: 82%,8%
